@@ -1,0 +1,35 @@
+{% extends 'blog/layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h1>{{ post.title }}</h1>
+                    </div>
+                    <div class="panel-body">
+                        {% if post.photo %}
+                            <img src="{{ post.photo.url }}" />
+                        {% endif %}
+                        {{ post.text|linebreaks }}
+                        <h3>댓글</h3>
+                        <a href="{% url "blog:comment_new" post.pk %}">
+                            댓글 쓰기
+                        </a>
+                        <ul>
+                            {% for comment in post.comment_set.all %}
+                                <li>
+                                    {{ comment.message }} <small>by {{ comment.author }} at {{ comment.create_time }}</small>
+                                    <a href="{% url "blog:comment_edit" post.pk comment.pk %}">수정</a>
+                                    <a href="{% url "blog:comment_delete" post.pk comment.pk %}" class="text-danger">삭제</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            <a href="{% url "blog:index" %}">글 목록으로</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
